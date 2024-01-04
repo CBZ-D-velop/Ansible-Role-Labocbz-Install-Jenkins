@@ -1,1 +1,29 @@
 ---
+- name: "Check if folder home exist"
+  register: folder_check
+  ansible.builtin.stat:
+    path: "{{ install_jenkins_home }}"
+
+- name: "Create home path"
+  when: not folder_check.stat.exists
+  ansible.builtin.file:
+    path: "{{ install_jenkins_home }}"
+    state: directory
+    recurse: yes
+    mode: "0700"
+    group: "{{ install_jenkins_group }}"
+    owner: "{{ install_jenkins_user }}"
+
+- name: "Install Jenkins (no SSL)"
+  when: not (install_jenkins_ssl | default(false))
+  community.docker.docker_container:
+    name: "{{ install_jenkins_container_name }}"
+    image: "jenkins/jenkins"
+    state: "started"
+    recreate: false
+    restart_policy: "always"
+    ports:
+      - "{{ install_jenkins_host }}:{{ install_jenkins_port }}:8080"
+      - "0.0.0.0:{{ install_jenkins_client_port }}:50000"
+    volumes:
+      - "{{ install_jenkins_home }}:/var/jenkins_home"

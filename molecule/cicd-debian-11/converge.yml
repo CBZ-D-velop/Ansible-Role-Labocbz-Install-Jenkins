@@ -12,5 +12,13 @@
     - name: "Include labocbz.install_jenkins"
       tags:
         - "labocbz.install_jenkins"
+      vars:
+        install_jenkins_user: "{{ inv_install_jenkins_user }}"
+        install_jenkins_group: "{{ inv_install_jenkins_group }}"
+        install_jenkins_home: "{{ inv_install_jenkins_home }}"
+        install_jenkins_container_name: "{{ inv_install_jenkins_container_name }}"
+        install_jenkins_host: "{{ inv_install_jenkins_host }}"
+        install_jenkins_port: "{{ inv_install_jenkins_port }}"
+        install_jenkins_client_port: "{{ inv_install_jenkins_client_port }}"
       ansible.builtin.include_role:
         name: "labocbz.install_jenkins"
