@@ -2,3 +2,13 @@
 inv_prepare_host_system_users:
   - login: "jenkins"
     group: "jenkins"
+
+inv_install_jenkins_user: "jenkins"
+inv_install_jenkins_group: "jenkins"
+
+inv_install_jenkins_home: "/var/lib/jenkins"
+
+inv_install_jenkins_container_name: "jenkins"
+inv_install_jenkins_host: "0.0.0.0"
+inv_install_jenkins_port: 8080
+inv_install_jenkins_client_port: 50000

@@ -1,1 +1,11 @@
 ---
+
+install_jenkins_user: "jenkins"
+install_jenkins_group: "jenkins"
+
+install_jenkins_home: "/var/lib/jenkins"
+
+install_jenkins_container_name: "jenkins"
+install_jenkins_host: "0.0.0.0"
+install_jenkins_port: 8080
+install_jenkins_client_port: 50000

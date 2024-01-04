@@ -14,8 +14,15 @@
 ![Tag: Debian](https://img.shields.io/badge/Tech-Debian-orange)
 ![Tag: SSL/TLS](https://img.shields.io/badge/Tech-SSL%2FTLS-orange)
 ![Tag: Jenkins](https://img.shields.io/badge/Tech-Jenkins-orange)
+![Tag: Docker](https://img.shields.io/badge/Tech-Docker-orange)
 
 An Ansible role to install and configure Jenkins on your host.
+
+This Ansible role streamlines the deployment of a Jenkins Docker image in a straightforward manner. The role aims to simplify the Jenkins installation process using Docker, with the option to customize the Jenkins home, ports, and listening address according to specific environment requirements.
+
+Notably, SSL configuration is not handled by this role. It is advisable to consider adding a reverse proxy with SSL support to ensure secure communication with Jenkins. This additional layer of security will encrypt the exchanged data with the Jenkins server.
+
+In summary, this Ansible role offers an uncomplicated approach to deploying Jenkins through Docker, allowing for essential parameter customization while emphasizing the importance of implementing SSL through a recommended reverse proxy for enhanced security.
 
 ## Folder structure
 
@@ -100,7 +107,16 @@ Some vars a required to run this role:
 
 ```YAML
 ---
-your defaults vars here
+install_jenkins_user: "jenkins"
+install_jenkins_group: "jenkins"
+
+install_jenkins_home: "/var/lib/jenkins"
+
+install_jenkins_container_name: "jenkins"
+install_jenkins_host: "0.0.0.0"
+install_jenkins_port: 8080
+install_jenkins_client_port: 50000
+
 ```
 
 The best way is to modify these vars by copy the ./default/main.yml file into the ./vars and edit with your personnals requirements.
@@ -112,13 +128,22 @@ In order to surchage vars, you have multiples possibilities but for mains cases 
 ```YAML
 # From inventory
 ---
-all vars from to put/from your inventory
+
+inv_install_jenkins_user: "jenkins"
+inv_install_jenkins_group: "jenkins"
+
+inv_install_jenkins_home: "/var/lib/jenkins"
+
+inv_install_jenkins_container_name: "jenkins"
+inv_install_jenkins_host: "0.0.0.0"
+inv_install_jenkins_port: 8080
+inv_install_jenkins_client_port: 50000
+
 ```
 
 ```YAML
 # From AWX / Tower
----
-all vars from to put/from AWX / Tower
+
 ```
 
 ### Run
@@ -126,8 +151,19 @@ all vars from to put/from AWX / Tower
 To run this role, you can copy the molecule/default/converge.yml playbook and add it into your playbook:
 
 ```YAML
----
-your converge.yml file here
+- name: "Include labocbz.install_jenkins"
+  tags:
+    - "labocbz.install_jenkins"
+  vars:
+    install_jenkins_user: "{{ inv_install_jenkins_user }}"
+    install_jenkins_group: "{{ inv_install_jenkins_group }}"
+    install_jenkins_home: "{{ inv_install_jenkins_home }}"
+    install_jenkins_container_name: "{{ inv_install_jenkins_container_name }}"
+    install_jenkins_host: "{{ inv_install_jenkins_host }}"
+    install_jenkins_port: "{{ inv_install_jenkins_port }}"
+    install_jenkins_client_port: "{{ inv_install_jenkins_client_port }}"
+  ansible.builtin.include_role:
+    name: "labocbz.install_jenkins"
 ```
 
 ## Architectural Decisions Records
@@ -137,6 +173,9 @@ Here you can put your change to keep a trace of your work and decisions.
 ### 2024-01-02: First Init
 
 * First init of this role with the bootstrap_role playbook by Lord Robin Crombez
+* Role create the jenkins_home
+* Role use Docker and deploy the latest Jenkins image with configuration
+* Manual / pakcage install not used, because of /tmp mout errors, so ... sloth.
 
 ## Authors
 
@@ -146,3 +185,4 @@ Here you can put your change to keep a trace of your work and decisions.
 
 * [Ansible role documentation](https://docs.ansible.com/ansible/latest/playbook_guide/playbooks_reuse_roles.html)
 * [Ansible Molecule documentation](https://molecule.readthedocs.io/)
+* [jenkins/jenkins](https://hub.docker.com/r/jenkins/jenkins)
