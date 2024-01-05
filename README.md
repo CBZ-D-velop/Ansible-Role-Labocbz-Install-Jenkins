@@ -111,6 +111,7 @@ install_jenkins_user: "jenkins"
 install_jenkins_group: "jenkins"
 
 install_jenkins_home: "/var/lib/jenkins"
+install_jenkins_heap: "1024m"
 
 install_jenkins_container_name: "jenkins"
 install_jenkins_host: "0.0.0.0"
@@ -133,6 +134,7 @@ inv_install_jenkins_user: "jenkins"
 inv_install_jenkins_group: "jenkins"
 
 inv_install_jenkins_home: "/var/lib/jenkins"
+inv_install_jenkins_heap: "1024m"
 
 inv_install_jenkins_container_name: "jenkins"
 inv_install_jenkins_host: "0.0.0.0"
@@ -162,6 +164,7 @@ To run this role, you can copy the molecule/default/converge.yml playbook and ad
     install_jenkins_host: "{{ inv_install_jenkins_host }}"
     install_jenkins_port: "{{ inv_install_jenkins_port }}"
     install_jenkins_client_port: "{{ inv_install_jenkins_client_port }}"
+    install_jenkins_heap: "{{ inv_install_jenkins_heap }}"
   ansible.builtin.include_role:
     name: "labocbz.install_jenkins"
 ```
@@ -176,6 +179,12 @@ Here you can put your change to keep a trace of your work and decisions.
 * Role create the jenkins_home
 * Role use Docker and deploy the latest Jenkins image with configuration
 * Manual / pakcage install not used, because of /tmp mout errors, so ... sloth.
+
+### 2023-01-05: Tested
+
+* Role install Jenkins with Docker
+* Tested on Develop / Validation envs
+* Dont forget to get the password when its the first install !
 
 ## Authors
 

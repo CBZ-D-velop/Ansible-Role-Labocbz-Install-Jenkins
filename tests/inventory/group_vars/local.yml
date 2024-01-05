@@ -7,6 +7,7 @@ inv_install_jenkins_user: "jenkins"
 inv_install_jenkins_group: "jenkins"
 
 inv_install_jenkins_home: "/var/lib/jenkins"
+inv_install_jenkins_heap: "1024m"
 
 inv_install_jenkins_container_name: "jenkins"
 inv_install_jenkins_host: "0.0.0.0"

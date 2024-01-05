@@ -1,4 +1,15 @@
 ---
+- name: "Edit the Jenkins user"
+  ansible.builtin.user:
+    name: "{{ install_jenkins_user }}"
+    groups: "{{ install_jenkins_group }}"
+    state: present
+    system: true
+    create_home: false
+    append: true
+    shell: "/sbin/nologin"
+    uid: 1000
+
 - name: "Check if folder home exist"
   register: folder_check
   ansible.builtin.stat:
@@ -14,8 +25,7 @@
     group: "{{ install_jenkins_group }}"
     owner: "{{ install_jenkins_user }}"
 
-- name: "Install Jenkins (no SSL)"
-  when: not (install_jenkins_ssl | default(false))
+- name: "Install Jenkins with Docker"
   community.docker.docker_container:
     name: "{{ install_jenkins_container_name }}"
     image: "jenkins/jenkins"
@@ -27,3 +37,5 @@
       - "0.0.0.0:{{ install_jenkins_client_port }}:50000"
     volumes:
       - "{{ install_jenkins_home }}:/var/jenkins_home"
+    env:
+      JAVA_OPTS: "-Xmx{{ install_jenkins_heap }}"

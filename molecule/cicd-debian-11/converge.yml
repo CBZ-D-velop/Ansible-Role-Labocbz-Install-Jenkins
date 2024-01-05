@@ -20,5 +20,6 @@
         install_jenkins_host: "{{ inv_install_jenkins_host }}"
         install_jenkins_port: "{{ inv_install_jenkins_port }}"
         install_jenkins_client_port: "{{ inv_install_jenkins_client_port }}"
+        install_jenkins_heap: "{{ inv_install_jenkins_heap }}"
       ansible.builtin.include_role:
         name: "labocbz.install_jenkins"
