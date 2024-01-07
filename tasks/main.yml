@@ -2,7 +2,7 @@
 - name: "Edit the Jenkins user"
   ansible.builtin.user:
     name: "{{ install_jenkins_user }}"
-    groups: "{{ install_jenkins_group }}"
+    groups: "docker,{{ install_jenkins_group }}"
     state: present
     system: true
     create_home: false
