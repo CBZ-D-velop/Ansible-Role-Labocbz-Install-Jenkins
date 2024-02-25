@@ -1,0 +1,17 @@
+---
+inv_prepare_host__system_users:
+  - login: "jenkins"
+    group: "jenkins"
+    uid: 1000
+    gid: 1000
+
+inv_install_jenkins__user: "1000"
+inv_install_jenkins__group: "1000"
+
+inv_install_jenkins__home: "/var/lib/jenkins"
+inv_install_jenkins__heap: "1024m"
+
+inv_install_jenkins__container_name: "jenkins"
+inv_install_jenkins__host: "0.0.0.0"
+inv_install_jenkins__port: 8080
+inv_install_jenkins__client_port: 50000
