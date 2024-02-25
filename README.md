@@ -107,16 +107,17 @@ Some vars a required to run this role:
 
 ```YAML
 ---
-install_jenkins_user: "jenkins"
-install_jenkins_group: "jenkins"
 
-install_jenkins_home: "/var/lib/jenkins"
-install_jenkins_heap: "1024m"
+install_jenkins__user: "1000"
+install_jenkins__group: "1000"
 
-install_jenkins_container_name: "jenkins"
-install_jenkins_host: "0.0.0.0"
-install_jenkins_port: 8080
-install_jenkins_client_port: 50000
+install_jenkins__home: "/var/lib/jenkins"
+install_jenkins__heap: "1024m"
+
+install_jenkins__container_name: "jenkins"
+install_jenkins__host: "0.0.0.0"
+install_jenkins__port: 8080
+install_jenkins__client_port: 50000
 
 ```
 
@@ -129,17 +130,22 @@ In order to surchage vars, you have multiples possibilities but for mains cases 
 ```YAML
 # From inventory
 ---
+inv_prepare_host__system_users:
+  - login: "jenkins"
+    group: "jenkins"
+    uid: 1000
+    gid: 1000
 
-inv_install_jenkins_user: "jenkins"
-inv_install_jenkins_group: "jenkins"
+inv_install_jenkins__user: "1000"
+inv_install_jenkins__group: "1000"
 
-inv_install_jenkins_home: "/var/lib/jenkins"
-inv_install_jenkins_heap: "1024m"
+inv_install_jenkins__home: "/var/lib/jenkins"
+inv_install_jenkins__heap: "1024m"
 
-inv_install_jenkins_container_name: "jenkins"
-inv_install_jenkins_host: "0.0.0.0"
-inv_install_jenkins_port: 8080
-inv_install_jenkins_client_port: 50000
+inv_install_jenkins__container_name: "jenkins"
+inv_install_jenkins__host: "0.0.0.0"
+inv_install_jenkins__port: 8080
+inv_install_jenkins__client_port: 50000
 
 ```
 
@@ -157,14 +163,14 @@ To run this role, you can copy the molecule/default/converge.yml playbook and ad
   tags:
     - "labocbz.install_jenkins"
   vars:
-    install_jenkins_user: "{{ inv_install_jenkins_user }}"
-    install_jenkins_group: "{{ inv_install_jenkins_group }}"
-    install_jenkins_home: "{{ inv_install_jenkins_home }}"
-    install_jenkins_container_name: "{{ inv_install_jenkins_container_name }}"
-    install_jenkins_host: "{{ inv_install_jenkins_host }}"
-    install_jenkins_port: "{{ inv_install_jenkins_port }}"
-    install_jenkins_client_port: "{{ inv_install_jenkins_client_port }}"
-    install_jenkins_heap: "{{ inv_install_jenkins_heap }}"
+    install_jenkins__user: "{{ inv_install_jenkins__user }}"
+    install_jenkins__group: "{{ inv_install_jenkins__group }}"
+    install_jenkins__home: "{{ inv_install_jenkins__home }}"
+    install_jenkins__container_name: "{{ inv_install_jenkins__container_name }}"
+    install_jenkins__host: "{{ inv_install_jenkins__host }}"
+    install_jenkins__port: "{{ inv_install_jenkins__port }}"
+    install_jenkins__client_port: "{{ inv_install_jenkins__client_port }}"
+    install_jenkins__heap: "{{ inv_install_jenkins__heap }}"
   ansible.builtin.include_role:
     name: "labocbz.install_jenkins"
 ```
@@ -185,6 +191,16 @@ Here you can put your change to keep a trace of your work and decisions.
 * Role install Jenkins with Docker
 * Tested on Develop / Validation envs
 * Dont forget to get the password when its the first install !
+
+### 2024-02-24: Fix and CI
+
+* Added support for new CI base
+* Edit all vars with __
+* Tested and validated on Docker DIND
+* Removed docker socket local and port
+* Role handle the creation of a user, not a system user (gid/uid > 1000)
+* Jenkins need a user with uid/gid == 1000
+* Handle creation error of the user
 
 ## Authors
 
