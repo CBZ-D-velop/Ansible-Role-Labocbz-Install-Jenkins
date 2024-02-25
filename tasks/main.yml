@@ -1,21 +1,20 @@
 ---
-- name: "Handler system / user"
+- name: "Create Jenkins Group"
   failed_when: false
-  block:
-    - name: "Create Jenkins Group"
-      ansible.builtin.group:
-        name: "{{ install_jenkins__group }}"
-        state: present
-        gid: 1000
+  ansible.builtin.group:
+    name: "{{ install_jenkins__group }}"
+    state: present
+    gid: 1000
 
-    - name: "Edit the Jenkins user"
-      ansible.builtin.user:
-        name: "{{ install_jenkins__user }}"
-        groups: "docker,{{ install_jenkins__group }}"
-        state: present
-        create_home: false
-        shell: "/sbin/nologin"
-        uid: 1000
+- name: "Edit the Jenkins user"
+  failed_when: false
+  ansible.builtin.user:
+    name: "{{ install_jenkins__user }}"
+    groups: "docker,{{ install_jenkins__group }}"
+    state: present
+    create_home: false
+    shell: "/sbin/nologin"
+    uid: 1000
 
 - name: "Check if folder home exist"
   register: folder_check
