@@ -1,6 +1,6 @@
 ---
 - name: "Handler system / user"
-  ignore_errors: true
+  failed_when: false
   block:
     - name: "Create Jenkins Group"
       ansible.builtin.group:
